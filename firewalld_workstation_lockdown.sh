@@ -72,12 +72,12 @@ net.ipv4.tcp_syncookies = 1
 EOF
 sudo sysctl --system >/dev/null
 sleep 1
-# Turn off LLMNR/mDNS name poisoning ---
+# Turn off LLMNR/mDNS name poisoning
 sudo mkdir -p /etc/systemd/resolved.conf.d
 printf '[Resolve]\nLLMNR=no\nMulticastDNS=no\n' | sudo tee /etc/systemd/resolved.conf.d/90-hardening.conf >/dev/null
 sudo systemctl restart systemd-resolved
 sleep 1
-# Stop the exposed services themselves ---
+# Stop the exposed services themselves
 sudo systemctl disable --now sshd cockpit.socket cups-browsed avahi-daemon 2>/dev/null
 sleep 1
 # (OPTIONAL, off by default) outbound allowlist
