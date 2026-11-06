@@ -34,34 +34,33 @@ while IFS= read -r rule; do
 done
 sudo firewall-cmd --reload
 sleep 1
-#sudo firewall-cmd --permanent --remove-rich-rule='rule family="ipv4" source address=#"10.20.0.0/24" port port="6967" protocol="tcp" accept' && sudo firewall-cmd --reload
 # Default deny public zone
 sudo firewall-cmd --set-default-zone=public
 sudo firewall-cmd --permanent --zone=public --set-target=DROP
 sleep 1
 # Remove rules
 # sudo firewall-cmd --remove-rich-rule='rule family="ipv4" source address="" port port="" protocol="" accept' --permanent
+#sudo firewall-cmd --permanent --remove-rich-rule='rule family="ipv4" source address=#"10.20.0.0/24" port port="6967" protocol="tcp" accept' && sudo firewall-cmd --reload
 for s in $(sudo firewall-cmd --permanent --zone=public --list-services); do
   sudo firewall-cmd --permanent --zone=public --remove-service="$s"
 done
 sudo firewall-cmd --reload
 sleep 1
-# --- Added: make every NetworkManager connection follow the default zone ---
-# (Connections pinned to another zone, e.g. FedoraWorkstation, ignore 'public')
+# Make every NetworkManager connection follow the default zone
 for c in $(nmcli -g UUID connection show); do
   sudo nmcli connection modify "$c" connection.zone ""
 done
 sleep 1
-# --- Added: strip ports and masquerading from public, not just services ---
+# Strip ports and masquerading from public, not just services
 for p in $(sudo firewall-cmd --permanent --zone=public --list-ports); do
   sudo firewall-cmd --permanent --zone=public --remove-port="$p"
 done
 sudo firewall-cmd --permanent --zone=public --remove-masquerade
 sleep 1
-# --- Added: log dropped packets (view with: journalctl -k -g DROP) ---
+# Log dropped packets (view with: journalctl -k -g DROP)
 sudo firewall-cmd --set-log-denied=unicast
 sleep 1
-# --- Added: kernel network hardening ---
+# Kernel network hardening
 sudo tee /etc/sysctl.d/90-hardening.conf >/dev/null <<'EOF'
 net.ipv4.conf.all.rp_filter = 1
 net.ipv4.conf.all.accept_redirects = 0
@@ -73,15 +72,15 @@ net.ipv4.tcp_syncookies = 1
 EOF
 sudo sysctl --system >/dev/null
 sleep 1
-# --- Added: turn off LLMNR/mDNS name poisoning ---
+# Turn off LLMNR/mDNS name poisoning ---
 sudo mkdir -p /etc/systemd/resolved.conf.d
 printf '[Resolve]\nLLMNR=no\nMulticastDNS=no\n' | sudo tee /etc/systemd/resolved.conf.d/90-hardening.conf >/dev/null
 sudo systemctl restart systemd-resolved
 sleep 1
-# --- Added: stop the exposed services themselves ---
+# Stop the exposed services themselves ---
 sudo systemctl disable --now sshd cockpit.socket cups-browsed avahi-daemon 2>/dev/null
 sleep 1
-# --- Added (OPTIONAL, off by default): outbound allowlist ---
+# (OPTIONAL, off by default) outbound allowlist
 # Breaks anything not listed (VPNs, mail clients, git over SSH...). Uncomment to use.
 # sudo firewall-cmd --permanent --new-policy=egress
 # sudo firewall-cmd --permanent --policy=egress --add-ingress-zone=HOST
@@ -94,7 +93,7 @@ sleep 1
 sleep 1
 # Reload
 sudo firewall-cmd --reload
-# --- Added: re-apply zone changes to active connections ---
+# Re-apply zone changes to active connections
 for d in $(nmcli -g DEVICE connection show --active); do
   sudo nmcli device reapply "$d" >/dev/null 2>&1
 done
