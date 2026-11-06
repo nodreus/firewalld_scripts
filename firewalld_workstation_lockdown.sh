@@ -7,7 +7,6 @@
 #Execution: root (wheel)
 #Compatability: Fedora, Debian, RHEL
 read -p "[CAUTION]: Executing this script will disrupt your ability to ssh or remote in to this machine. Would you like to proceed? (y/n): " response
-# Convert response to lowercase and check if it's 'y' or 'yes'
 if [[ "${response,,}" != "y" && "${response,,}" != "yes" ]]; then
     echo "Operation canceled."
     exit 1
