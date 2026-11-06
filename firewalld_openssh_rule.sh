@@ -1,6 +1,11 @@
 #!/bin/bash
-# Default deny public zone 
-# SSH rule(s) allowed to specific IP / subnet
+#firewalld_openssh_rule.sh - OpenSSH server lockdown script that allows SSH to specific IP ranges
+#Fedora 45
+#Linux Kernel 7.2.13-200.fc44.x86_64
+#GNU Bash 5.3.9(1)-release (x86_64-redhat-linux-gnu)
+#Dependencies: firewalld, iproute2, systemd
+#Execution: root (wheel)
+#Compatability: Fedora, Debian, RHEL
  
 set -euo pipefail
 
