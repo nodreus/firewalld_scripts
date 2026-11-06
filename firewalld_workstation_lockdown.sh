@@ -1,5 +1,5 @@
 #!/bin/bash
-#fortress.sh - Total workstation lockdown: deny-by-default firewall, no exposed services, network hardening
+#firwalld_workstation_lockdown.sh - Total workstation lockdown: deny-by-default firewall, no exposed services, network hardening
 #Fedora 45
 #Linux Kernel 7.2.13-200.fc44.x86_64
 #GNU Bash 5.3.9(1)-release (x86_64-redhat-linux-gnu)
