@@ -6,14 +6,12 @@
 #Dependencies: firewalld, iproute2, systemd
 #Execution: root (wheel)
 #Compatability: Fedora, Debian, RHEL
- 
 set -euo pipefail
-
 # SSH Configuration
 SSHIP="192.168.1.1"	# replace with your machines IP
-#SSHIP2="192.168.1.2"	# replace with a second machines IP or subnet range
 SSHPORT="22"
 SSHPROTO="tcp"
+#SSHIP2="192.168.1.2"	# replace with a second machines IP or subnet range if needed
 #
 echo -e "\033[0;32mfirewalld
 ** * *  *
