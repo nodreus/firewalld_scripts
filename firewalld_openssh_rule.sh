@@ -15,14 +15,19 @@ SSHIP="192.168.1.1"	# replace with your machines IP
 SSHPORT="22"
 SSHPROTO="tcp"
 #
-echo -e "\033[0;32m                                                 
-                                           █     
-  ▄▄▄   ▄▄▄▄    ▄▄▄   ▄ ▄▄    ▄▄▄    ▄▄▄   █ ▄▄  
- █▀ ▀█  █▀ ▀█  █▀  █  █▀  █  █   ▀  █   ▀  █▀  █ 
- █   █  █   █  █▀▀▀▀  █   █   ▀▀▀▄   ▀▀▀▄  █   █ 
- ▀█▄█▀  ██▄█▀  ▀█▄▄▀  █   █  ▀▄▄▄▀  ▀▄▄▄▀  █   █ 
-        █                                        
-        ▀                                        \033[0m"
+echo -e "\033[0;32mfirewalld
+** * *  *
+  *   **
+    *
+     *
+
+      **
+        *
+   *
+*   *
+
+
+ **      \033[0m"
 #
 # 1. SSH allow-rule first
 sudo firewall-cmd --permanent --zone=public --add-rich-rule="rule family=\"ipv4\" source address=\"$SSHIP\" service name=\"ssh\" accept"
